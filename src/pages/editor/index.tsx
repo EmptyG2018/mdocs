@@ -45,6 +45,7 @@ const EditorRoot = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100vh;
+  background-color: #1d2532;
 `;
 
 const Editor: React.FC = () => {
@@ -71,19 +72,19 @@ const Editor: React.FC = () => {
 
   const sections = [
     {
-      key: 1,
+      value: 1,
       label: "标题和描述",
     },
     {
-      key: 2,
+      value: 2,
       label: "快捷入口",
     },
     {
-      key: 3,
+      value: 3,
       label: "附录",
     },
     {
-      key: 4,
+      value: 4,
       label: "技术栈",
     },
   ];
@@ -92,64 +93,12 @@ const Editor: React.FC = () => {
     changeDoc(marked.parse(doc));
   };
 
-  const Demo = styled.div`
-    .Resizer {
-      background: #000;
-      opacity: 0.2;
-      z-index: 1;
-      -moz-box-sizing: border-box;
-      -webkit-box-sizing: border-box;
-      box-sizing: border-box;
-      -moz-background-clip: padding;
-      -webkit-background-clip: padding;
-      background-clip: padding-box;
-    }
-
-    .Resizer:hover {
-      -webkit-transition: all 2s ease;
-      transition: all 2s ease;
-    }
-
-    .Resizer.horizontal {
-      height: 11px;
-      margin: -5px 0;
-      border-top: 5px solid rgba(255, 255, 255, 0);
-      border-bottom: 5px solid rgba(255, 255, 255, 0);
-      cursor: row-resize;
-      width: 100%;
-    }
-
-    .Resizer.horizontal:hover {
-      border-top: 5px solid rgba(0, 0, 0, 0.5);
-      border-bottom: 5px solid rgba(0, 0, 0, 0.5);
-    }
-
-    .Resizer.vertical {
-      width: 11px;
-      margin: 0 -5px;
-      border-left: 5px solid rgba(255, 255, 255, 0);
-      border-right: 5px solid rgba(255, 255, 255, 0);
-      cursor: col-resize;
-    }
-
-    .Resizer.vertical:hover {
-      border-left: 5px solid rgba(0, 0, 0, 0.5);
-      border-right: 5px solid rgba(0, 0, 0, 0.5);
-    }
-    .Resizer.disabled {
-      cursor: not-allowed;
-    }
-    .Resizer.disabled:hover {
-      border-color: transparent;
-    }
-  `;
-
   return (
     <EditorRoot>
-      <Header />
+      <Header logo="Hello Markdown！" />
       <Main>
         <PanelGroup direction="horizontal">
-          <Panel minSize={10}>
+          <Panel defaultSize={10} maxSize={10}>
             <ResourcePanel
               header={
                 <ResourceHeader
@@ -159,7 +108,11 @@ const Editor: React.FC = () => {
                     <ResourceExtraButton>展开/折叠</ResourceExtraButton>,
                   ]}
                 >
-                  <ResourceSearch keyword={keyword} onChange={changeKeyword} />
+                  <ResourceSearch
+                    placeholder="搜索文件资源"
+                    keyword={keyword}
+                    onChange={changeKeyword}
+                  />
                 </ResourceHeader>
               }
             >
@@ -172,20 +125,20 @@ const Editor: React.FC = () => {
               />
             </ResourcePanel>
           </Panel>
-          <PanelDividerHandle />
-          <Panel defaultSize={10}>
+          <PanelDividerHandle hoverColor="#0351ff" activeColor="#0351ff" />
+          <Panel defaultSize={12} maxSize={12}>
             <ModulePanel>
-              <Section items={sections} />
+              <Section value={1} items={sections} />
             </ModulePanel>
           </Panel>
-          <PanelDividerHandle />
-          <Panel defaultSize={10}>
+          <PanelDividerHandle hoverColor="#0351ff" activeColor="#0351ff" />
+          <Panel defaultSize={38} minSize={20}>
             <EditorPanel>
               <MarkdownEditor onChange={handleEditorChange} />
             </EditorPanel>
           </Panel>
-          <PanelDividerHandle />
-          <Panel defaultSize={10}>
+          <PanelDividerHandle hoverColor="#0351ff" activeColor="#0351ff" />
+          <Panel defaultSize={40} minSize={25}>
             <PreviewPanel>
               <MarkdownPreview
                 doc={doc}

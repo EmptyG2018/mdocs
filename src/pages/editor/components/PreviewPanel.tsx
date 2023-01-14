@@ -11,7 +11,7 @@ const MarkdownPreviewRoot = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: #272e3c;
+  background-color: #282c34;
 `;
 
 const MarkdownPreviewHeader = styled.div`

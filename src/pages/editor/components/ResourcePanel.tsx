@@ -9,7 +9,7 @@ const ResourcePanelRoot = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: #272e3c;
+  background-color: #192230;
 `;
 
 const ResourcePanelHeader = styled.div`

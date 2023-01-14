@@ -9,21 +9,32 @@ import styled from "styled-components";
  * @param onEnter Entr回车按钮事件
  */
 
-const ResourceSearchRoot = styled.div`
-  border: 1px solid red;
-`;
-
-const ResourceSeachWrap = styled.div`
-  padding: 8px 16px;
-`;
-
-const ResourceSearchControl = styled.input`
+const ResourceSearchRoot = styled.input`
   box-sizing: border-box;
   outline: none;
   border: none;
   margin: 0;
-  padding: 0;
-  background-color: transparent;
+  padding: 10px 12px;
+  background-color: #141c28;
+  border-width: 2px;
+  border-style: solid;
+  border-color: transparent;
+  border-radius: 6px;
+  color: #8e98a3;
+  font-size: 14px;
+  width: 100%;
+  &::-webkit-input-placeholder {
+    color: #8e98a3;
+  }
+  &:-moz-placeholder {
+    color: #8e98a3;
+  }
+  &::-moz-placeholder {
+    color: #8e98a3;
+  }
+  &:focus {
+    border-color: #0351ff;
+  }
 `;
 
 type ResourceHeaderProps = {
@@ -44,18 +55,14 @@ const ResourceHeader: React.FC<ResourceHeaderProps> = ({
   };
 
   return (
-    <ResourceSearchRoot>
-      <ResourceSeachWrap>
-        <ResourceSearchControl
-          value={keyword}
-          placeholder={placeholder}
-          onChange={() => {
-            onChange && onChange(keyword);
-          }}
-          onKeyUp={handleKeyUp}
-        />
-      </ResourceSeachWrap>
-    </ResourceSearchRoot>
+    <ResourceSearchRoot
+      value={keyword}
+      placeholder={placeholder}
+      onChange={(e) => {
+        onChange && onChange(e.target.value);
+      }}
+      onKeyUp={handleKeyUp}
+    />
   );
 };
 

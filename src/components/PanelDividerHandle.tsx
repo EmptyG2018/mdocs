@@ -3,16 +3,16 @@ import styled from "styled-components";
 import { PanelResizeHandle } from "react-resizable-panels";
 
 type PanelDividerHandle = {
-  color: string;
-  activeColor: string;
-  hoverColor: string;
+  color?: string;
+  activeColor?: string;
+  hoverColor?: string;
 };
 
 const PanelResizeHandleRoot = styled(PanelResizeHandle)<PanelDividerHandle>`
-  flex: 0 0 4px;
+  flex: 0 0 2px;
   position: relative;
   outline: none;
-  background-color: ${(props) => props.hoverColor};
+  background-color: ${(props) => props.color};
   &:hover {
     background-color: ${(props) => props.hoverColor};
   }
