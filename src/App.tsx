@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { createGlobalStyle } from "styled-components";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Editor from "./pages/editor";
+import Demo from "./pages/demo";
 
 const GloablStyle = createGlobalStyle`
 * {
@@ -17,11 +19,22 @@ body {
 }
 `;
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Editor />,
+  },
+  {
+    path: "/demo",
+    element: <Demo />,
+  },
+]);
+
 const App: React.FC = () => {
   return (
     <div className="App">
       <GloablStyle />
-      <Editor />
+      <RouterProvider router={router} />
     </div>
   );
 };

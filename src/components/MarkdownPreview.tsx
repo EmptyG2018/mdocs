@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import "highlight.js/styles/atom-one-dark.css";
 
 /**
  * @title markdown浏览器
@@ -32,14 +33,9 @@ import styled from "styled-components";
  * tableHeadColor: red;
  * tableCellBgColor: red;
  * tableCellColor: red;
- *
- *
- *
  */
 
-const MarkdownPreviewRoot = styled.div``;
-
-const MarkdownPreviewNormalize = styled.div`
+const MarkdownPreviewRoot = styled.div`
   * {
     box-sizing: border-box;
   }
@@ -55,6 +51,11 @@ const MarkdownPreviewNormalize = styled.div`
     margin: 0;
   }
 
+  code {
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas,
+      Liberation Mono, monospace;
+  }
+
   img {
     border-style: none;
   }
@@ -63,10 +64,20 @@ const MarkdownPreviewNormalize = styled.div`
     border-spacing: 0;
     border-collapse: collapse;
   }
+
+  width: 100%;
+  height: 100%;
+  word-wrap: break-word;
+  max-height: 100%;
+  overflow-y: auto;
+  background-color: ${(props) => props.token.bgColor};
+`;
+
+const MarkdownPreviewContainer = styled.div`
+  padding: 16px 32px;
 `;
 
 const MarkdownPreviewHtml = styled.div`
-  background-color: ${(props) => props.token.bgColor};
   color: ${(props) => props.token.color};
   font-size: 16px;
   line-height: 1.5;
@@ -89,6 +100,9 @@ const MarkdownPreviewHtml = styled.div`
   a {
     color: ${(props) => props.token.linkColor};
     text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   h1,
@@ -97,7 +111,7 @@ const MarkdownPreviewHtml = styled.div`
   h4,
   h5,
   h6 {
-    color: ${(props) => props.token.headMarginTopVertical};
+    color: ${(props) => props.token.headColor};
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: bold;
@@ -137,8 +151,9 @@ const MarkdownPreviewHtml = styled.div`
   }
 
   blockquote {
-    padding: 0 1em;
+    padding: 0.5em 1em;
     color: ${(props) => props.token.blockquoteColor};
+    background-color: ${(props) => props.token.blockquoteBgColor};
     border-left-width: 0.25em;
     border-left-style: solid;
     border-left-color: ${(props) => props.token.blockquoteBorderColor};
@@ -170,6 +185,17 @@ const MarkdownPreviewHtml = styled.div`
     color: ${(props) => props.token.codeColor};
     background-color: ${(props) => props.token.codeBgColor};
     border-radius: 6px;
+  }
+
+  pre {
+    code {
+      display: block;
+      padding: 16px;
+      overflow: auto;
+      font-size: 85%;
+      line-height: 1.45;
+      background-color: ${(props) => props.token.codeBlockBgColor};
+    }
   }
 
   table {
@@ -210,13 +236,13 @@ type MarkdownPreviewProps = {
 
 const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ doc, token }) => {
   return (
-    <MarkdownPreviewRoot>
-      <MarkdownPreviewNormalize>
+    <MarkdownPreviewRoot token={token}>
+      <MarkdownPreviewContainer>
         <MarkdownPreviewHtml
-          dangerouslySetInnerHTML={{ __html: doc }}
           token={token}
+          dangerouslySetInnerHTML={{ __html: doc }}
         />
-      </MarkdownPreviewNormalize>
+      </MarkdownPreviewContainer>
     </MarkdownPreviewRoot>
   );
 };

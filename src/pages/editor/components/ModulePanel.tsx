@@ -17,7 +17,7 @@ const ModulePanelHeader = styled.div`
 `;
 
 const ModulePanelMain = styled.div`
-  felx: 1;
+  flex: 1 0 auto;
 `;
 
 const ModulePanelFooter = styled.div`

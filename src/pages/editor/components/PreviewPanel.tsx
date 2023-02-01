@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 
-
 /**
  * @title md浏览器
  */
@@ -11,7 +10,6 @@ const MarkdownPreviewRoot = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: #282c34;
 `;
 
 const MarkdownPreviewHeader = styled.div`
@@ -19,9 +17,9 @@ const MarkdownPreviewHeader = styled.div`
 `;
 
 const MarkdownPreviewMain = styled.div`
-  felx: 1;
+  flex: 1 0 auto;
   width: 100%;
-  height: 100%;
+  height: 0;
 `;
 
 const MarkdownPreviewFooter = styled.div`

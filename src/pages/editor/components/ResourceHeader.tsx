@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import styled from "styled-components";
 
 /**
@@ -10,7 +10,12 @@ const ResourceHeaderRoot = styled.div``;
 
 const ResourceHeaderContent = styled.div``;
 
-const ResourceHeaderExtra = styled.div``;
+const ResourceHeaderExtra = styled.div`
+  margin-top: 6px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+`;
 
 type ResourceHeaderProps = {
   children?: React.ReactNode;
@@ -22,7 +27,11 @@ const ResourceHeader: React.FC<ResourceHeaderProps> = ({ children, extra }) => {
     <ResourceHeaderRoot>
       <ResourceHeaderContent>{children}</ResourceHeaderContent>
       {extra && (
-        <ResourceHeaderExtra>{extra.map((item) => item)}</ResourceHeaderExtra>
+        <ResourceHeaderExtra>
+          {extra.map((item, index) => (
+            <Fragment key={index}>{item}</Fragment>
+          ))}
+        </ResourceHeaderExtra>
       )}
     </ResourceHeaderRoot>
   );

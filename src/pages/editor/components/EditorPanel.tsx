@@ -10,16 +10,15 @@ const EditorPanelRoot = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  background-color: #272e3c;
 `;
 
 const EditorPanelHeader = styled.div`
   padding: 12px 16px;
 `;
 const EditorPanelMain = styled.div`
-  flex: 1;
+  flex: 1 0 auto;
   width: 100%;
-  height: 100%;
+  height: 0;
 `;
 const EditorPanelFooter = styled.div`
   padding: 12px 16px;

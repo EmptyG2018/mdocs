@@ -4,7 +4,7 @@ import styled from "styled-components";
 const MainRoot = styled.div`
   display: flex;
   width: 100%;
-  flex: 1;
+  flex: 1 0 auto;
 `;
 
 type MainProps = {

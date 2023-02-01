@@ -3,7 +3,12 @@ import { languages } from "@codemirror/language-data";
 import { EditorState } from "@codemirror/state";
 import { oneDarkTheme } from "@codemirror/theme-one-dark";
 import { EditorView, basicSetup } from "codemirror";
-import React, { useEffect, useRef } from "react";
+import React, {
+  useEffect,
+  useRef,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import styled from "styled-components";
 
 /**
@@ -14,55 +19,67 @@ import styled from "styled-components";
 const MarkdownEditorRoot = styled.div`
   width: 100%;
   height: 100%;
-  overflow-y: auto;
+  .cm-editor {
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+  }
+  .cm-scroller {
+    overflow: auto;
+  }
 `;
 
 type MarkdownEditorProps = {
   onChange?: (doc: string) => void;
 };
 
-const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ onChange }) => {
-  const editor = useRef(null);
+const MarkdownEditor: React.FC<MarkdownEditorProps> = forwardRef(
+  ({ onChange }, ref) => {
+    const editorEl = useRef(null);
+    const editorState = useRef<EditorState | null>(null);
+    const editorView = useRef<EditorView | null>(null);
 
-  useEffect(() => {
-    if (editor.current) {
-      const customTheme = EditorView.theme({
-        "&": {
-          width: "100%",
-          height: "100%",
-        },
-      });
+    useEffect(() => {
+      if (editorEl.current) {
+        editorState.current = EditorState.create({
+          doc: "",
+          extensions: [
+            basicSetup,
+            markdown({
+              codeLanguages: languages,
+            }),
+            oneDarkTheme,
+            EditorView.updateListener.of((v) => {
+              onChange && onChange(v.state.doc.toString());
+            }),
+          ],
+        });
 
-      let state = EditorState.create({
-        doc: "Hello World",
-        extensions: [
-          basicSetup,
-          markdown({
-            codeLanguages: languages,
-          }),
-          oneDarkTheme,
-          customTheme,
-          EditorView.updateListener.of((v) => {
-            onChange && onChange(v.state.doc.toString());
-          }),
-        ],
-      });
+        editorView.current = new EditorView({
+          state: editorState.current,
+          parent: editorEl.current,
+        });
+      }
+    }, []);
 
-      const view = new EditorView({
-        state,
-        parent: editor.current,
-      });
+    useImperativeHandle(ref, () => ({
+      setValue(value: string) {
+        if (editorState.current && editorView.current) {
+          const transaction = editorView.current.state.update({
+            changes: {
+              from: 0,
+              to: editorState.current.doc.length,
+              insert: value,
+            },
+          });
 
-      // let transaction = view.state.update({
-      //   changes: { from: 0, insert: "# this is wi\n ndow." },
-      // });
-      // console.log(transaction.state.doc.toString());
+          editorView.current.dispatch(transaction);
+        }
+      },
+    }));
 
-      // view.dispatch(transaction);
-    }
-  }, []);
-
-  return <MarkdownEditorRoot ref={editor}></MarkdownEditorRoot>;
-};
+    return <MarkdownEditorRoot ref={editorEl}></MarkdownEditorRoot>;
+  }
+);
 
 export default MarkdownEditor;

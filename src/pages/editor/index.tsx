@@ -1,5 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import styled from "styled-components";
+import {
+  AiOutlineFolderAdd,
+  AiOutlineFileAdd,
+  AiOutlineMinusSquare,
+} from "react-icons/ai";
 
 import {
   Path,
@@ -8,6 +13,8 @@ import {
   MarkdownPreview,
   PanelDividerHandle,
 } from "../../components";
+import useModule from "./hooks/useModule";
+import useEditor from "./hooks/useEditor";
 import EditorPanel from "./components/EditorPanel";
 import Header from "./components/Header";
 import Main from "./components/Main";
@@ -17,7 +24,6 @@ import ResourcePanel from "./components/ResourcePanel";
 import ResourceHeader from "./components/ResourceHeader";
 import ResourceSearch from "./components/ResourceSearch";
 import { PanelGroup, Panel } from "react-resizable-panels";
-import { marked } from "marked";
 
 /**
  * @title 新增文件夹按钮
@@ -25,6 +31,8 @@ import { marked } from "marked";
 const ResourceExtraButtonRoot = styled.div`
   padding: 6px;
   border: 0;
+  font-size: 16px;
+  color: #8e98a3;
 `;
 
 type ResourceExtraButtonProps = {
@@ -49,10 +57,24 @@ const EditorRoot = styled.div`
 `;
 
 const Editor: React.FC = () => {
+  const markdownEditor = useRef(null);
+  const { modules, moduleKey, checkSelected, changeModule, changeModuleKey } =
+    useModule();
+  const { markedDoc } = useEditor();
+
   const [doc, changeDoc] = useState("");
   const [keyword, changeKeyword] = useState("");
   const [openKeys, setOpenKeys] = useState(["sub1"]);
   const [selectedKeys, setSelectdKeys] = useState(["file1", "file2"]);
+
+  // const doc = modules.map((item) => item.content).join("");
+
+  useEffect(() => {
+    if (checkSelected) {
+      markdownEditor.current?.setValue("gegeg");
+    }
+  }, [moduleKey]);
+
   const items = [
     {
       key: "sub1",
@@ -70,28 +92,10 @@ const Editor: React.FC = () => {
     },
   ];
 
-  const sections = [
-    {
-      value: 1,
-      label: "标题和描述",
-    },
-    {
-      value: 2,
-      label: "快捷入口",
-    },
-    {
-      value: 3,
-      label: "附录",
-    },
-    {
-      value: 4,
-      label: "技术栈",
-    },
-  ];
-
-  const handleEditorChange = (doc: any) => {
-    changeDoc(marked.parse(doc));
-  };
+  const handleEditorChange = (doc: any) =>
+    markedDoc(doc, (error, html) => {
+      changeDoc(html);
+    });
 
   return (
     <EditorRoot>
@@ -103,9 +107,15 @@ const Editor: React.FC = () => {
               header={
                 <ResourceHeader
                   extra={[
-                    <ResourceExtraButton>新增文件</ResourceExtraButton>,
-                    <ResourceExtraButton>新增文件夹</ResourceExtraButton>,
-                    <ResourceExtraButton>展开/折叠</ResourceExtraButton>,
+                    <ResourceExtraButton>
+                      <AiOutlineFileAdd />
+                    </ResourceExtraButton>,
+                    <ResourceExtraButton>
+                      <AiOutlineFolderAdd />
+                    </ResourceExtraButton>,
+                    <ResourceExtraButton>
+                      <AiOutlineMinusSquare />
+                    </ResourceExtraButton>,
                   ]}
                 >
                   <ResourceSearch
@@ -128,13 +138,22 @@ const Editor: React.FC = () => {
           <PanelDividerHandle hoverColor="#0351ff" activeColor="#0351ff" />
           <Panel defaultSize={12} maxSize={12}>
             <ModulePanel>
-              <Section value={1} items={sections} />
+              <Section
+                selectedKey={moduleKey}
+                items={modules}
+                drag
+                onDragEnd={changeModule}
+                onChange={changeModuleKey}
+              />
             </ModulePanel>
           </Panel>
           <PanelDividerHandle hoverColor="#0351ff" activeColor="#0351ff" />
           <Panel defaultSize={38} minSize={20}>
             <EditorPanel>
-              <MarkdownEditor onChange={handleEditorChange} />
+              <MarkdownEditor
+                ref={markdownEditor}
+                onChange={handleEditorChange}
+              />
             </EditorPanel>
           </Panel>
           <PanelDividerHandle hoverColor="#0351ff" activeColor="#0351ff" />
@@ -143,21 +162,75 @@ const Editor: React.FC = () => {
               <MarkdownPreview
                 doc={doc}
                 token={{
-                  bgColor: "#282c34",
-                  color: "#adbac7",
-                  linkColor: "#539bf5",
-                  hrColor: "#373e47",
-                  headBorderColor: "#373e47",
+                  // *** github *** //
+                  // bgColor: "#282c34",
+                  // color: "#adbac7",
+                  // linkColor: "#539bf5",
+                  // hrColor: "#373e47",
+                  // headColor: "#adbac7",
+                  // headBorderColor: "#373e47",
 
-                  blockquoteColor: "#768390",
-                  blockquoteBorderColor: "#444c56",
+                  // blockquoteColor: "#768390",
+                  // blockquoteBgColor: "#282c34",
+                  // blockquoteBorderColor: "#444c56",
 
-                  tableColor: "#adbac7",
-                  tableBorderColor: "#373e47",
-                  tableHeadBgColor: "#22272e",
-                  tableHeadColor: "#adbac7",
-                  tableCellBgColor: "#22272e",
-                  tableCellColor: "#adbac7",
+                  // codeColor: "#adbac7",
+                  // codeBgColor: "#3C434D",
+                  // codeBlockBgColor: "#2d333b",
+
+                  // tableColor: "#adbac7",
+                  // tableBorderColor: "#373e47",
+                  // tableHeadBgColor: "#22272e",
+                  // tableHeadColor: "#adbac7",
+                  // tableCellBgColor: "#22272e",
+                  // tableCellColor: "#adbac7",
+
+                  // *** 柠檬黄 *** //
+                  // bgColor: "#ffffff",
+                  // color: "#4a5568",
+                  // linkColor: "#f2b500",
+                  // hrColor: "#eeeeee",
+                  // headColor: "#2c3e50",
+                  // headBorderColor: "#eeeeee",
+
+                  // blockquoteColor: "#6c757d",
+                  // blockquoteBgColor: "#FFFCF2",
+                  // blockquoteBorderColor: "#ffc107",
+
+                  // codeColor: "#2f3137",
+                  // codeBgColor: "#ffefbe",
+                  // codeBlockBgColor: "#e5e5e5",
+
+                  // tableColor: "#4a5568",
+                  // tableBorderColor: "#eeeeee",
+                  // tableHeadBgColor: "#f8f8f8",
+                  // tableHeadColor: "#343a40",
+                  // tableCellBgColor: "#ffffff",
+                  // tableCellColor: "#4a5568",
+
+
+                  // *** 柠檬黄 *** //
+                  bgColor: "#ffffff",
+                  color: "#4a5568",
+                  linkColor: "#f2b500",
+                  hrColor: "#eeeeee",
+                  headColor: "#2c3e50",
+                  headBorderColor: "#eeeeee",
+
+                  blockquoteColor: "#6c757d",
+                  blockquoteBgColor: "#FFFCF2",
+                  blockquoteBorderColor: "#ffc107",
+
+                  codeColor: "#2f3137",
+                  codeBgColor: "#ffefbe",
+                  codeBlockBgColor: "#e5e5e5",
+
+                  tableColor: "#4a5568",
+                  tableBorderColor: "#eeeeee",
+                  tableHeadBgColor: "#f8f8f8",
+                  tableHeadColor: "#343a40",
+                  tableCellBgColor: "#ffffff",
+                  tableCellColor: "#4a5568",
                 }}
               />
             </PreviewPanel>
