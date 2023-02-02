@@ -68,7 +68,7 @@ const MarkdownEditor: React.FC<MarkdownEditorProps> = forwardRef(
           const transaction = editorView.current.state.update({
             changes: {
               from: 0,
-              to: editorState.current.doc.length,
+              to: editorView.current.state.doc.length,
               insert: value,
             },
           });

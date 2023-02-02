@@ -13,6 +13,7 @@ import {
   MarkdownPreview,
   PanelDividerHandle,
 } from "../../components";
+import type { SectionItemKey, SectionItem } from "../../components";
 import useModule from "./hooks/useModule";
 import useEditor from "./hooks/useEditor";
 import EditorPanel from "./components/EditorPanel";
@@ -58,22 +59,33 @@ const EditorRoot = styled.div`
 
 const Editor: React.FC = () => {
   const markdownEditor = useRef(null);
-  const { modules, moduleKey, checkSelected, changeModule, changeModuleKey } =
-    useModule();
+  const {
+    modules,
+    moduleKey,
+    currentModule,
+    changeModule,
+    changeModuleKey,
+    changeModuleContent,
+  } = useModule();
   const { markedDoc } = useEditor();
 
-  const [doc, changeDoc] = useState("");
   const [keyword, changeKeyword] = useState("");
   const [openKeys, setOpenKeys] = useState(["sub1"]);
   const [selectedKeys, setSelectdKeys] = useState(["file1", "file2"]);
 
-  // const doc = modules.map((item) => item.content).join("");
-
   useEffect(() => {
-    if (checkSelected) {
-      markdownEditor.current?.setValue("gegeg");
+    if (currentModule) {
+      markdownEditor.current?.setValue(currentModule.content);
     }
   }, [moduleKey]);
+
+  let doc = "";
+
+  const markdown = modules.map((item) => item.content).join("");
+
+  markedDoc(markdown, (error, html) => {
+    doc = html;
+  });
 
   const items = [
     {
@@ -92,10 +104,11 @@ const Editor: React.FC = () => {
     },
   ];
 
-  const handleEditorChange = (doc: any) =>
-    markedDoc(doc, (error, html) => {
-      changeDoc(html);
-    });
+  const handleEditorChange = (doc: string) => {
+    changeModuleContent(currentModule?.id, doc);
+  };
+
+  const handleModuleChange = () => {};
 
   return (
     <EditorRoot>
@@ -143,7 +156,7 @@ const Editor: React.FC = () => {
                 items={modules}
                 drag
                 onDragEnd={changeModule}
-                onChange={changeModuleKey}
+                onChange={handleModuleChange}
               />
             </ModulePanel>
           </Panel>
@@ -162,7 +175,7 @@ const Editor: React.FC = () => {
               <MarkdownPreview
                 doc={doc}
                 token={{
-                  // *** github *** //
+                  // *** github黑 *** //
                   // bgColor: "#282c34",
                   // color: "#adbac7",
                   // linkColor: "#539bf5",
@@ -185,52 +198,51 @@ const Editor: React.FC = () => {
                   // tableCellBgColor: "#22272e",
                   // tableCellColor: "#adbac7",
 
-                  // *** 柠檬黄 *** //
+                  // *** vue绿 *** //
                   // bgColor: "#ffffff",
-                  // color: "#4a5568",
-                  // linkColor: "#f2b500",
-                  // hrColor: "#eeeeee",
+                  // color: "#2c3e50",
+                  // linkColor: "#3eaf7c",
+                  // hrColor: "#eaecef",
                   // headColor: "#2c3e50",
-                  // headBorderColor: "#eeeeee",
+                  // headBorderColor: "#eaecef",
 
-                  // blockquoteColor: "#6c757d",
-                  // blockquoteBgColor: "#FFFCF2",
-                  // blockquoteBorderColor: "#ffc107",
+                  // blockquoteColor: "#999",
+                  // blockquoteBgColor: "#EDF8F3",
+                  // blockquoteBorderColor: "#3eaf7c",
 
-                  // codeColor: "#2f3137",
-                  // codeBgColor: "#ffefbe",
-                  // codeBlockBgColor: "#e5e5e5",
+                  // codeColor: "#EB7B25",
+                  // codeBgColor: "#F8F8F8",
+                  // codeBlockBgColor: "#282c34",
 
-                  // tableColor: "#4a5568",
-                  // tableBorderColor: "#eeeeee",
-                  // tableHeadBgColor: "#f8f8f8",
-                  // tableHeadColor: "#343a40",
+                  // tableColor: "#5B6C7C",
+                  // tableBorderColor: "#EBEDEE",
+                  // tableHeadBgColor: "#F2F2F2",
+                  // tableHeadColor: "#3A4E63",
                   // tableCellBgColor: "#ffffff",
-                  // tableCellColor: "#4a5568",
+                  // tableCellColor: "#5B6C7C",
 
-
-                  // *** 柠檬黄 *** //
+                  // *** 掘金蓝 *** //
                   bgColor: "#ffffff",
-                  color: "#4a5568",
-                  linkColor: "#f2b500",
-                  hrColor: "#eeeeee",
-                  headColor: "#2c3e50",
-                  headBorderColor: "#eeeeee",
+                  color: "#252933",
+                  linkColor: "#0269c8",
+                  hrColor: "#ececec",
+                  headColor: "#252933",
+                  headBorderColor: "#ececec",
 
-                  blockquoteColor: "#6c757d",
-                  blockquoteBgColor: "#FFFCF2",
-                  blockquoteBorderColor: "#ffc107",
+                  blockquoteColor: "#666",
+                  blockquoteBgColor: "#f8f8f8",
+                  blockquoteBorderColor: "#cbcbcb",
 
-                  codeColor: "#2f3137",
-                  codeBgColor: "#ffefbe",
-                  codeBlockBgColor: "#e5e5e5",
+                  codeColor: "#ff502c",
+                  codeBgColor: "#fff5f5",
+                  codeBlockBgColor: "#f8f8f8",
 
-                  tableColor: "#4a5568",
-                  tableBorderColor: "#eeeeee",
-                  tableHeadBgColor: "#f8f8f8",
-                  tableHeadColor: "#343a40",
+                  tableColor: "#252933",
+                  tableBorderColor: "#EBEDEE",
+                  tableHeadBgColor: "#F2F2F2",
+                  tableHeadColor: "#252933",
                   tableCellBgColor: "#ffffff",
-                  tableCellColor: "#4a5568",
+                  tableCellColor: "#252933",
                 }}
               />
             </PreviewPanel>

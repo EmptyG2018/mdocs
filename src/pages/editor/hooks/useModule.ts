@@ -27,11 +27,32 @@ const useModule = () => {
   const [moduleKey, changeModuleKey] = useState("3");
   const [modules, changeModule] = useState(constData);
 
-  const checkSelected = useMemo(() => {
-    return modules.some((item) => item.id === moduleKey);
+  const currentModule = useMemo(() => {
+    return modules.find((item) => item.id === moduleKey);
   }, [moduleKey, modules]);
 
-  return { modules, moduleKey, checkSelected, changeModule, changeModuleKey };
+  const changeModuleContent = (id: string, doc: string) => {
+    changeModule(
+      modules.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            content: doc,
+          };
+        }
+        return item;
+      })
+    );
+  };
+
+  return {
+    modules,
+    moduleKey,
+    currentModule,
+    changeModule,
+    changeModuleKey,
+    changeModuleContent,
+  };
 };
 
 export default useModule;
