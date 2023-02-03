@@ -89,13 +89,14 @@ const Editor: React.FC = () => {
   }, [modules]);
 
   useEffect(() => {
-    markdownEditor.current.setValue(currentModule?.content);
-  }, [currentModule]);
+    if (currentModule) {
+      markdownEditor.current.setValue(currentModule?.content);
+    }
+  }, [moduleKey]);
 
   const handleEditorChange = (doc: string) => {
-    
+    changeModuleContent(currentModule?.id, doc);
   };
-
 
   return (
     <EditorRoot>

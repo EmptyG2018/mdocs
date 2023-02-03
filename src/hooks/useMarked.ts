@@ -11,7 +11,7 @@ const useMarked = () => {
       },
       langPrefix: "hljs language-",
     });
-    marked.parse(doc);
+    return marked.parse(doc);
   };
 
   return { markedMarkdown };
