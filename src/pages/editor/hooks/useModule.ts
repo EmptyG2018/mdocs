@@ -4,22 +4,22 @@ const constData = [
   {
     id: "1",
     label: "标题和描述",
-    content: "",
+    content: "标题和描述",
   },
   {
     id: "2",
     label: "快捷入口",
-    content: "",
+    content: "快捷入口",
   },
   {
     id: "3",
     label: "附录",
-    content: "",
+    content: "附录",
   },
   {
     id: "4",
     label: "技术栈",
-    content: "",
+    content: "技术栈",
   },
 ];
 

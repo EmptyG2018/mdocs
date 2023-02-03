@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 import styled from "styled-components";
 import {
   AiOutlineFolderAdd,
@@ -14,6 +14,8 @@ import {
   PanelDividerHandle,
 } from "../../components";
 import type { SectionItemKey, SectionItem } from "../../components";
+import { useMarked } from "../../hooks";
+import useResource from "./hooks/useResource";
 import useModule from "./hooks/useModule";
 import useEditor from "./hooks/useEditor";
 import EditorPanel from "./components/EditorPanel";
@@ -58,7 +60,16 @@ const EditorRoot = styled.div`
 `;
 
 const Editor: React.FC = () => {
-  const markdownEditor = useRef(null);
+  const {
+    keyword,
+    resources,
+    openResourceKeys,
+    selectedResourceKeys,
+    changeKeyword,
+    changeOpenResourceKey,
+    changeSelectedResourceKey,
+  } = useResource();
+
   const {
     modules,
     moduleKey,
@@ -67,48 +78,24 @@ const Editor: React.FC = () => {
     changeModuleKey,
     changeModuleContent,
   } = useModule();
-  const { markedDoc } = useEditor();
 
-  const [keyword, changeKeyword] = useState("");
-  const [openKeys, setOpenKeys] = useState(["sub1"]);
-  const [selectedKeys, setSelectdKeys] = useState(["file1", "file2"]);
+  const { markedMarkdown } = useMarked();
+
+  const { markdownEditor } = useEditor();
+
+  const doc = useMemo(() => {
+    const markdown = modules.map((item) => item.content).join("");
+    return markedMarkdown(markdown);
+  }, [modules]);
 
   useEffect(() => {
-    if (currentModule) {
-      markdownEditor.current?.setValue(currentModule.content);
-    }
-  }, [moduleKey]);
-
-  let doc = "";
-
-  const markdown = modules.map((item) => item.content).join("");
-
-  markedDoc(markdown, (error, html) => {
-    doc = html;
-  });
-
-  const items = [
-    {
-      key: "sub1",
-      label: "百度百科",
-      children: [
-        {
-          key: "file1",
-          label: "天猫优选",
-        },
-        {
-          key: "file2",
-          label: "美团优选",
-        },
-      ],
-    },
-  ];
+    markdownEditor.current.setValue(currentModule?.content);
+  }, [currentModule]);
 
   const handleEditorChange = (doc: string) => {
-    changeModuleContent(currentModule?.id, doc);
+    
   };
 
-  const handleModuleChange = () => {};
 
   return (
     <EditorRoot>
@@ -140,15 +127,15 @@ const Editor: React.FC = () => {
               }
             >
               <Path
-                openKeys={openKeys}
-                selectedKeys={selectedKeys}
-                items={items}
-                onOpenChange={setOpenKeys}
-                onSelect={setSelectdKeys}
+                openKeys={openResourceKeys}
+                selectedKeys={selectedResourceKeys}
+                items={resources}
+                onOpenChange={changeOpenResourceKey}
+                onSelect={changeSelectedResourceKey}
               />
             </ResourcePanel>
           </Panel>
-          <PanelDividerHandle hoverColor="#0351ff" activeColor="#0351ff" />
+          <PanelDividerHandle hoverColor="#8694b0" activeColor="#0351ff" />
           <Panel defaultSize={12} maxSize={12}>
             <ModulePanel>
               <Section
@@ -156,7 +143,7 @@ const Editor: React.FC = () => {
                 items={modules}
                 drag
                 onDragEnd={changeModule}
-                onChange={handleModuleChange}
+                onChange={changeModuleKey}
               />
             </ModulePanel>
           </Panel>
