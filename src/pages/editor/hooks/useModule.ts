@@ -27,9 +27,7 @@ const useModule = () => {
   const [moduleKey, changeModuleKey] = useState("1");
   const [modules, changeModule] = useState(constData);
 
-  const currentModule = useMemo(() => {
-    return modules.find((item) => item.id === moduleKey);
-  }, [moduleKey, modules]);
+  const currentModule = modules.find((item) => item.id === moduleKey);
 
   const changeModuleContent = (id: string, doc: string) => {
     changeModule(
