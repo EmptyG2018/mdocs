@@ -1,9 +1,4 @@
-import React, {
-  useRef,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useState, useRef, useEffect } from "react";
 import * as monaco from "monaco-editor";
 import styled from "styled-components";
 
@@ -13,39 +8,70 @@ const MarkdownEditorRoot = styled.div`
 `;
 
 type MarkdownEditorProps = {
-  onChange?: (doc: string) => void;
+  model: any;
+  theme: any;
+  onMount: any;
+  onChange: any;
 };
 
-export const MarkdownEditor: React.FC<MarkdownEditorProps> = forwardRef(
-  ({ onChange }, ref) => {
-    const editor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
-    const monacoEl = useRef<HTMLDivElement | null>(null);
+export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
+  model,
+  theme,
+  onMount,
+  onChange,
+}) => {
+  const [mountedEditor, setMountEditor] = useState(false);
+  const editor = useRef<monaco.editor.IStandaloneCodeEditor | null>(null);
+  const monacoEl = useRef<HTMLDivElement | null>(null);
 
-    useEffect(() => {
-      if (monacoEl.current) {
-        editor.current = monaco.editor.create(monacoEl.current, {
-          value: "",
-          language: "markdown",
-          automaticLayout: true,
-        });
-
-        editor.current.onDidChangeModelContent((e) => {
-          onChange && onChange(editor.current?.getValue() || "");
-        });
-      }
+  useEffect(() => {
+    if (editor.current && mountedEditor) {
       return () => editor.current?.dispose();
-    }, []);
+    }
+  }, []);
 
-    useImperativeHandle(ref, () => ({
-      setValue(doc: string) {
-        if (editor.current) {
-          editor.current.setValue(doc);
-        }
-      },
-    }));
+  useEffect(() => {
+    if (monacoEl.current && !mountedEditor) {
+      monaco.languages.typescript.javascriptDefaults.setCompilerOptions({
+        target: monaco.languages.typescript.ScriptTarget.Latest,
+        module: monaco.languages.typescript.ModuleKind.ES2015,
+        allowNonTsExtensions: true,
+        lib: ["es2018"],
+      });
 
-    return <MarkdownEditorRoot ref={monacoEl}></MarkdownEditorRoot>;
-  }
-);
+      const defaultModel = monaco.editor.createModel(
+        model.value,
+        "markdown",
+        model.uri
+      );
+
+      editor.current = monaco.editor.create(monacoEl.current, {
+        model: defaultModel,
+        automaticLayout: true,
+      });
+
+      editor.current.onDidChangeModelContent((e) => {
+        onChange && onChange(editor.current?.getValue() || "");
+      });
+
+      onMount(monaco, editor.current);
+      setMountEditor(true);
+    }
+  }, [mountedEditor]);
+
+  useEffect(() => {
+    if (mountedEditor) {
+      editor.current?.setModel();
+    }
+  }, [mountedEditor, model]);
+
+  useEffect(() => {
+    if (mountedEditor) {
+      // monaco.editor.setTheme(theme);
+    }
+  }, [mountedEditor, theme]);
+
+  return <MarkdownEditorRoot ref={monacoEl}></MarkdownEditorRoot>;
+};
 
 export default MarkdownEditor;

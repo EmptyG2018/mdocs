@@ -13,7 +13,6 @@ import {
   MarkdownPreview,
   PanelDividerHandle,
 } from "../../components";
-import type { SectionItemKey, SectionItem } from "../../components";
 import { useMarked } from "../../hooks";
 import useResource from "./hooks/useResource";
 import useModule from "./hooks/useModule";
@@ -88,15 +87,11 @@ const Editor: React.FC = () => {
     return markedMarkdown(markdown);
   }, [modules]);
 
-  useEffect(() => {
-    if (currentModule) {
-      markdownEditor.current.setValue(currentModule?.content);
-    }
-  }, [moduleKey]);
-
   const handleEditorChange = (doc: string) => {
-    changeModuleContent(currentModule?.id, doc);
+    // changeModuleContent(currentModule?.id, doc);
   };
+
+  const mountEditor = (monaco, editor) => {};
 
   return (
     <EditorRoot>
@@ -152,7 +147,12 @@ const Editor: React.FC = () => {
           <Panel defaultSize={38} minSize={20}>
             <EditorPanel>
               <MarkdownEditor
-                ref={markdownEditor}
+                theme="vs"
+                model={{
+                  value: currentModule?.content,
+                  uri: currentModule?.id,
+                }}
+                onMount={mountEditor}
                 onChange={handleEditorChange}
               />
             </EditorPanel>
@@ -210,20 +210,43 @@ const Editor: React.FC = () => {
                   // tableCellColor: "#5B6C7C",
 
                   // *** 掘金蓝 *** //
-                  bgColor: "#ffffff",
-                  color: "#252933",
-                  linkColor: "#0269c8",
-                  hrColor: "#ececec",
-                  headColor: "#252933",
-                  headBorderColor: "#ececec",
+                  // bgColor: "#ffffff",
+                  // color: "#252933",
+                  // linkColor: "#0269c8",
+                  // hrColor: "#ececec",
+                  // headColor: "#252933",
+                  // headBorderColor: "#ececec",
+
+                  // blockquoteColor: "#666",
+                  // blockquoteBgColor: "#f8f8f8",
+                  // blockquoteBorderColor: "#cbcbcb",
+
+                  // codeColor: "#ff502c",
+                  // codeBgColor: "#fff5f5",
+                  // codeBlockBgColor: "#f8f8f8",
+
+                  // tableColor: "#252933",
+                  // tableBorderColor: "#EBEDEE",
+                  // tableHeadBgColor: "#F2F2F2",
+                  // tableHeadColor: "#252933",
+                  // tableCellBgColor: "#ffffff",
+                  // tableCellColor: "#252933",
+
+                  // *** 掘金蓝 *** //
+                  bgColor: "#f5f4f8",
+                  color: "#18113c",
+                  linkColor: "#754ffe",
+                  hrColor: "#ecebf1",
+                  headColor: "#18113c",
+                  headBorderColor: "#ecebf1",
 
                   blockquoteColor: "#666",
                   blockquoteBgColor: "#f8f8f8",
                   blockquoteBorderColor: "#cbcbcb",
 
-                  codeColor: "#ff502c",
-                  codeBgColor: "#fff5f5",
-                  codeBlockBgColor: "#f8f8f8",
+                  codeColor: "#d63384",
+                  codeBgColor: "transparent",
+                  codeBlockBgColor: "#18113c",
 
                   tableColor: "#252933",
                   tableBorderColor: "#EBEDEE",
