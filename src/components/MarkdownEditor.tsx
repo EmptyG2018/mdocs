@@ -61,7 +61,14 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
 
   useEffect(() => {
     if (mountedEditor) {
-      editor.current?.setModel();
+      // const defaultModel = monaco.editor.createModel(
+      //   model.value,
+      //   "markdown",
+      //   model.uri
+      // );
+
+      // editor.current?.setModel(defaultModel);
+      console.log('model');
     }
   }, [mountedEditor, model]);
 
