@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
+import { MarkdownEditor } from "../../../components";
+import { useModule } from "../store";
 
 /**
  * @title md编辑器
@@ -24,22 +26,38 @@ const EditorPanelFooter = styled.div`
   padding: 12px 16px;
 `;
 
-type EditorPanelProps = {
-  children?: React.ReactNode;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-};
+const EditorPanel: React.FC = () => {
+  const { module, moduleDispatch } = useModule();
 
-const EditorPanel: React.FC<EditorPanelProps> = ({
-  children,
-  header,
-  footer,
-}) => {
+  const currentModule = useMemo(() => {
+    return module.modules.find((item) => item.id === module.moduleKey);
+  }, [module.moduleKey, module.modules]);
+
+  const handleEditorChange = useCallback(
+    (doc: string) => {
+      moduleDispatch({
+        type: "changeModuleContent",
+        id: currentModule.moduleKey,
+        doc,
+      });
+    },
+    [currentModule]
+  );
+
   return (
     <EditorPanelRoot>
-      {header && <EditorPanelHeader>{header}</EditorPanelHeader>}
-      {children && <EditorPanelMain>{children}</EditorPanelMain>}
-      {footer && <EditorPanelFooter>{footer}</EditorPanelFooter>}
+      <EditorPanelHeader></EditorPanelHeader>
+      <EditorPanelMain>
+        <MarkdownEditor
+          theme="vs-dark"
+          model={{
+            value: currentModule?.content,
+            uri: currentModule?.id,
+          }}
+          onChange={handleEditorChange}
+        />
+      </EditorPanelMain>
+      <EditorPanelFooter></EditorPanelFooter>
     </EditorPanelRoot>
   );
 };

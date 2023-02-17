@@ -1,25 +1,12 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 
 const constData = [
   {
     id: "1",
-    label: "标题和描述",
-    content: "# 标题和描述",
-  },
-  {
-    id: "2",
-    label: "快捷入口",
-    content: "# 快捷入口",
-  },
-  {
-    id: "3",
-    label: "附录",
-    content: "# 附录",
-  },
-  {
-    id: "4",
-    label: "技术栈",
-    content: "# 技术栈",
+    label: "Title and Description",
+    content: `# Project Title
+
+A brief description of what this project does and who it's for`,
   },
 ];
 
@@ -30,6 +17,19 @@ const useModule = () => {
   const currentModule = modules.find((item) => item.id === moduleKey);
 
   const changeModuleContent = (id: string, doc: string) => {
+    console.log(
+      "modeulse",
+      modules.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            content: doc,
+          };
+        }
+        return item;
+      })
+    );
+
     changeModule(
       modules.map((item) => {
         if (item.id === id) {

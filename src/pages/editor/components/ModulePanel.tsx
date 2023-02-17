@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { Section } from "../../../components";
+import { useModule } from "../store";
 
 /**
  * @title 模块管理器
@@ -24,22 +26,32 @@ const ModulePanelFooter = styled.div`
   padding: 12px 16px;
 `;
 
-type ModulePanelProps = {
-  children?: React.ReactNode;
-  header?: React.ReactNode;
-  footer?: React.ReactNode;
-};
+const ModulePanel: React.FC = () => {
+  const { module, moduleDispatch } = useModule();
 
-const ModulePanel: React.FC<ModulePanelProps> = ({
-  children,
-  header,
-  footer,
-}) => {
   return (
     <ModulePanelRoot>
-      {header && <ModulePanelHeader>{header}</ModulePanelHeader>}
-      {children && <ModulePanelMain>{children}</ModulePanelMain>}
-      {footer && <ModulePanelFooter>{footer}</ModulePanelFooter>}
+      <ModulePanelHeader></ModulePanelHeader>
+      <ModulePanelMain>
+        <Section
+          selectedKey={module.moduleKey}
+          items={module.modules}
+          drag
+          onDragEnd={(modules) =>
+            moduleDispatch({
+              type: "changeModule",
+              modules,
+            })
+          }
+          onChange={(moduleKey) =>
+            moduleDispatch({
+              type: "changeModuleKey",
+              moduleKey,
+            })
+          }
+        />
+      </ModulePanelMain>
+      <ModulePanelFooter></ModulePanelFooter>
     </ModulePanelRoot>
   );
 };

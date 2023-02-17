@@ -10,14 +10,12 @@ const MarkdownEditorRoot = styled.div`
 type MarkdownEditorProps = {
   model: any;
   theme: any;
-  onMount: any;
   onChange: any;
 };
 
 export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   model,
   theme,
-  onMount,
   onChange,
 }) => {
   const [mountedEditor, setMountEditor] = useState(false);
@@ -39,42 +37,39 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
         lib: ["es2018"],
       });
 
-      const defaultModel = monaco.editor.createModel(
-        model.value,
-        "markdown",
-        model.uri
-      );
-
       editor.current = monaco.editor.create(monacoEl.current, {
-        model: defaultModel,
+        model: null,
         automaticLayout: true,
       });
 
-      editor.current.onDidChangeModelContent((e) => {
-        onChange && onChange(editor.current?.getValue() || "");
-      });
-
-      onMount(monaco, editor.current);
       setMountEditor(true);
     }
-  }, [mountedEditor]);
+  }, [mountedEditor, onChange]);
 
   useEffect(() => {
     if (mountedEditor) {
-      // const defaultModel = monaco.editor.createModel(
-      //   model.value,
-      //   "markdown",
-      //   model.uri
-      // );
+      const currentModel =
+        monaco.editor.getModel(model.uri) ||
+        monaco.editor.createModel(model.value, "markdown", model.uri);
 
-      // editor.current?.setModel(defaultModel);
-      console.log('model');
+      editor.current?.setModel(currentModel);
     }
   }, [mountedEditor, model]);
 
   useEffect(() => {
+    if (editor.current) {
+      editor.current.onDidChangeModelContent((e) => {
+        onChange && onChange(editor.current?.getModel()?.getValue() || "");
+      });
+    }
+    return () => {
+      onChange = null;
+    };
+  }, [onChange]);
+
+  useEffect(() => {
     if (mountedEditor) {
-      // monaco.editor.setTheme(theme);
+      monaco.editor.setTheme(theme);
     }
   }, [mountedEditor, theme]);
 
