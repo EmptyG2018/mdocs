@@ -25,9 +25,9 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
-    "react-resizable-panels": "^0.0.33",
     "react-router-dom": "^6.8.0",
     "react-run-code": "^0.2.1",
+    "react-split": "^2.0.14",
     "react-spring": "^9.6.1",
     "styled-components": "^5.3.6"
   },

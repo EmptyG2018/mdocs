@@ -37,7 +37,7 @@ const EditorPanel: React.FC = () => {
     (doc: string) => {
       moduleDispatch({
         type: "changeModuleContent",
-        id: currentModule.moduleKey,
+        moduleKey: currentModule.id,
         doc,
       });
     },

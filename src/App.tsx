@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { createGlobalStyle } from "styled-components";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Editor from "./pages/editor";

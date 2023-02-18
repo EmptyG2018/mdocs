@@ -35,9 +35,10 @@ const PreviewPanel: React.FC = () => {
 
   const { module } = useModule();
 
-  const doc = useMemo(() => {
-    return module.modules.map((item) => markedMarkdown(item.content)).join("");
-  }, [module.modules]);
+  const doc = useMemo(
+    () => module.modules.map((item) => markedMarkdown(item.content)).join(""),
+    [module.modules]
+  );
 
   return (
     <PreviewPanelRoot>

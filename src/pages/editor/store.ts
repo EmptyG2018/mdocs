@@ -50,7 +50,7 @@ const moduleReducer = (module, action) => {
       return {
         ...module,
         modules: module.modules.map((item) => {
-          if (item.id === action.id) {
+          if (item.id === action.moduleKey) {
             return {
               ...item,
               content: action.doc,
