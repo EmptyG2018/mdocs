@@ -14,8 +14,6 @@ import ResourceSearch from "./ResourceSearch";
 const ResourcePanelRoot = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 100%;
   background-color: #192230;
 `;
 

@@ -1,35 +1,44 @@
-import { useRef, useEffect, useState } from "react";
+import React from "react";
+import styled from "styled-components";
 
-const Child = ({ onChange }) => {
-  const mounted = useRef(false);
+import Split from "react-split";
 
-  useEffect(() => {
-    console.log("render 2.");
-    if (!mounted.current) {
-      console.log("还没");
-      onChange();
-    }
-  }, []);
-  useEffect(() => {
-    mounted.current = true;
-    console.log("render 1.");
-  }, []);
+/**
+ * @title 编辑
+ */
+const Demo = styled.div`
+  width: 100%;
+  height: 100vh;
+  background-color: #1d2532;
+`;
 
-  return <input type='' />;
-};
+const Split2 = styled(Split)`
+  display: flex;
+  flex-direction: row;
+  flex: 1 0 auto;
+  height: 100%;
 
-const Demo = () => {
-  const [num, setNum] = useState(1);
-  const change = () => {
-    console.log(num);
-  };
+  .gutter {
+    background-color: #eee;
+    background-repeat: no-repeat;
+    background-position: 50%;
+  }
+
+  .gutter.gutter-horizontal {
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
+    cursor: col-resize;
+  }
+`;
+
+const Editor: React.FC = () => {
   return (
-    <>
-      {num}
-      <button onClick={() => setNum(Math.random())}>rand</button>
-      <Child onChange={change} />
-    </>
+    <Demo>
+      <Split2>
+        <div>this is demo.</div>
+        <div>this is demo.</div>
+      </Split2>
+    </Demo>
   );
 };
 
-export default Demo;
+export default Editor;
