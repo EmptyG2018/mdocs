@@ -34,6 +34,7 @@ const ResourcePanelFooter = styled.div`
  */
 const ResourceExtraButtonRoot = styled.div`
   padding: 6px;
+
   border: 0;
   font-size: 16px;
   color: #8e98a3;

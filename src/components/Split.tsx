@@ -35,7 +35,7 @@ const SplitRoot = styled(SplitComponent)<SplitProps>`
   .gutter {
     background-color: ${({ color }) => color};
     &:hover {
-      background-color: ${({ hoverColor }) => hoverColor};
+      background-color: ${({ hoverColor }) => hoverColor || ""};
     }
   }
 

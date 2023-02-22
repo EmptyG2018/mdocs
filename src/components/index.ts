@@ -4,3 +4,4 @@ export type * from "./Section";
 export { default as MarkdownEditor } from "./MarkdownEditor";
 export { default as MarkdownPreview } from "./MarkdownPreview";
 export { default as Split } from "./Split";
+export { default as ActionBtn } from "./ActionBtn";

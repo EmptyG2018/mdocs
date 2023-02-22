@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from "react";
 import styled from "styled-components";
 import { MarkdownEditor } from "../../../components";
 import { useModule } from "../store";
+import { AiFillInfoCircle } from "react-icons/ai";
 
 /**
  * @title md编辑器
@@ -56,7 +57,27 @@ const EditorPanel: React.FC = () => {
           onChange={handleEditorChange}
         />
       </EditorPanelMain>
-      <EditorPanelFooter></EditorPanelFooter>
+      <EditorPanelFooter>
+        <div
+          title="
+#(1-^)： (1-6)级标题
+-：  无序列表
+1.： 有序列表
+>：  引用
+*：  斜体
+**： 加粗
+~~： 中划线
+![alt](URL)：  图片
+[title](URL)：  链接
+`代码`：  行内代码
+```代码```：  代码块
+---：  分隔线
+
+        "
+        >
+          <AiFillInfoCircle />
+        </div>
+      </EditorPanelFooter>
     </EditorPanelRoot>
   );
 };

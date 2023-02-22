@@ -57,7 +57,8 @@ const ModulePanel: React.FC = () => {
           }
         />
       </ModulePanelMain>
-      <ModulePanelFooter></ModulePanelFooter>
+      <ModulePanelFooter>
+      </ModulePanelFooter>
     </ModulePanelRoot>
   );
 };
