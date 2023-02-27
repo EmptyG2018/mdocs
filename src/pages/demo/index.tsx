@@ -1,44 +1,22 @@
-import React from "react";
-import styled from "styled-components";
+import React, { useEffect, useRef } from 'react';
 
-import Split from "react-split";
+function Example() {
+  const countRef = useRef(0); // 使用 useRef 存储 count 值
 
-/**
- * @title 编辑
- */
-const Demo = styled.div`
-  width: 100%;
-  height: 100vh;
-  background-color: #1d2532;
-`;
+  useEffect(() => {
+    console.log('useEffect count: ', countRef.current);
+  }, [countRef]); // 将 countRef 作为 useEffect 的依赖项
 
-const Split2 = styled(Split)`
-  display: flex;
-  flex-direction: row;
-  flex: 1 0 auto;
-  height: 100%;
-
-  .gutter {
-    background-color: #eee;
-    background-repeat: no-repeat;
-    background-position: 50%;
+  function handleClick() {
+    countRef.current++; // 在 handleClick 中更新 countRef 的值
   }
 
-  .gutter.gutter-horizontal {
-    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==");
-    cursor: col-resize;
-  }
-`;
-
-const Editor: React.FC = () => {
   return (
-    <Demo>
-      <Split2>
-        <div>this is demo.</div>
-        <div>this is demo.</div>
-      </Split2>
-    </Demo>
+    <div>
+      <p>You clicked {countRef.current} times</p>
+      <button onClick={handleClick}>Click me</button>
+    </div>
   );
-};
+}
 
-export default Editor;
+export default Example;
