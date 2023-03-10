@@ -1,43 +1,7 @@
-import React, { forwardRef } from "react";
+import React, { cloneElement } from "react";
 import type { DropResult } from "react-beautiful-dnd";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { AiOutlineHolder } from "react-icons/ai";
 import styled from "styled-components";
-
-const SectionItemRoot = styled.div<{ checked?: boolean }>`
-  display: flex;
-  align-items: center;
-  padding: 12px 12px;
-  background-color: ${(props) => (props.checked ? "#0351ff" : "#192230")};
-  color: ${(props) => (props.checked ? "#fff" : "#8e98a3")};
-  border-radius: 6px;
-  margin-bottom: 16px;
-  font-weight: 600;
-`;
-
-const SectionItemIcon = styled(AiOutlineHolder)`
-  margin-right: 8px;
-`;
-
-const SectionItemLabel = styled.div``;
-
-type SectionItemProps = {
-  title: string;
-  prefixIcon?: React.ReactNode;
-  checked?: boolean;
-  onClick?: () => void;
-};
-
-const SectionItem: React.FC<SectionItemProps> = forwardRef(
-  ({ prefixIcon, title, checked, onClick, ...rest }, ref) => {
-    return (
-      <SectionItemRoot ref={ref} checked={checked} {...rest} onClick={onClick}>
-        {prefixIcon}
-        <SectionItemLabel>{title}</SectionItemLabel>
-      </SectionItemRoot>
-    );
-  }
-);
 
 const reorder = (list: SectionItem[], startIndex: number, endIndex: number) => {
   const result = Array.from(list);
@@ -48,7 +12,7 @@ const reorder = (list: SectionItem[], startIndex: number, endIndex: number) => {
 };
 
 const SectionRoot = styled.div`
-  padding: 16px 20px;
+  width: 100%;
 `;
 
 export type SectionItemKey = string;
@@ -60,19 +24,27 @@ export type SectionItem = {
 };
 
 type SectionProps = {
-  selectedKey?: SectionItemKey;
+  multiple?: boolean;
+  selectedKeys: SectionItemKey[];
   drag?: boolean;
   items: SectionItem[];
   onDragEnd?: (items: SectionItem[]) => void;
-  onChange?: (itemKey: SectionItemKey, item: SectionItem) => void;
+  onChange?: (
+    selectedKeys: SectionItemKey[],
+    itemKey: SectionItemKey,
+    item: SectionItem
+  ) => void;
+  children: (item: SectionItem, drag?: boolean) => React.ReactElement;
 };
 
 const Section: React.FC<SectionProps> = ({
+  multiple,
   drag,
-  selectedKey,
+  selectedKeys,
   items,
   onDragEnd,
   onChange,
+  children,
 }) => {
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) {
@@ -88,9 +60,16 @@ const Section: React.FC<SectionProps> = ({
   };
 
   const handleItemClick = (item: SectionItem) => {
-    if (item.id !== selectedKey) {
-      onChange && onChange(item.id, item);
-    }
+    onChange &&
+      onChange(
+        !multiple
+          ? [item.id]
+          : selectedKeys.includes(item.id)
+          ? selectedKeys.filter((key) => key !== item.id)
+          : [...selectedKeys, ...item.id],
+        item.id,
+        item
+      );
   };
 
   return (
@@ -105,17 +84,15 @@ const Section: React.FC<SectionProps> = ({
                 index={index}
                 isDragDisabled={!drag}
               >
-                {(provided) => (
-                  <SectionItem
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    checked={item.id === selectedKey}
-                    title={item.label}
-                    prefixIcon={<SectionItemIcon />}
-                    onClick={() => handleItemClick(item)}
-                  />
-                )}
+                {(provided) =>
+                  cloneElement(children(item, drag), {
+                    ref: provided.innerRef,
+                    ...provided.draggableProps,
+                    ...provided.dragHandleProps,
+                    checked: selectedKeys.includes(item.id),
+                    onClick: () => handleItemClick(item),
+                  })
+                }
               </Draggable>
             ))}
             {provided.placeholder}

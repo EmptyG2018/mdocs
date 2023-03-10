@@ -17,7 +17,7 @@ const HeaderWrap = styled.div`
 
 const HeaderLogo = styled.h1`
   display: flex;
-  align-item: center;
+  align-items: center;
   margin: 0;
   padding: 0;
   font-size: 22px;

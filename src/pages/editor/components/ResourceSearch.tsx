@@ -37,14 +37,14 @@ const ResourceSearchRoot = styled.input`
   }
 `;
 
-type ResourceHeaderProps = {
+type ResourceSearchProps = {
   keyword: string;
   placeholder?: string;
   onChange?: (keyword: string) => void;
   onEnter?: (keyword: string) => void;
 };
 
-const ResourceHeader: React.FC<ResourceHeaderProps> = ({
+const ResourceSearch: React.FC<ResourceSearchProps> = ({
   keyword,
   placeholder,
   onChange,
@@ -66,4 +66,4 @@ const ResourceHeader: React.FC<ResourceHeaderProps> = ({
   );
 };
 
-export default ResourceHeader;
+export default ResourceSearch;

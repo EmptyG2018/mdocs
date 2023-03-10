@@ -3,28 +3,29 @@ import styled from "styled-components";
 
 const ModuleAddBtnRoot = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 14px 12px;
+  padding: 16px 12px;
   background-color: #192230;
   color: #8e98a3;
   border-radius: 6px;
-  font-weight: 600;
   font-size: 15px;
   cursor: pointer;
   user-select: none;
   border: 2px solid #192230;
+  gap: 6px;
   &:hover {
     color: #0351ff;
-    background-color: #b9cfff;
+    border-color: #0351ff;
   }
 `;
 
-const ModuleAddBtnIcon = styled.div``;
+const ModuleAddBtnIcon = styled.span`
+  line-height: 1;
+`;
 
 const ModuleAddBtnDesc = styled.span`
-  margin-top: 4px;
 `;
 
 type ModuleAddBtnProps = {

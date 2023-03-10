@@ -3,6 +3,7 @@ import { createGlobalStyle } from "styled-components";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Editor from "./pages/editor";
 import Demo from "./pages/demo";
+import IndexedDB from "./pages/indexedDB";
 
 const GloablStyle = createGlobalStyle`
 * {
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     path: "/demo",
     element: <Demo />,
   },
+  {
+    path: "/indexedDB",
+    element: <IndexedDB />
+  }
 ]);
 
 const App: React.FC = () => {

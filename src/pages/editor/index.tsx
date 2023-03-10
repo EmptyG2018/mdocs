@@ -6,13 +6,32 @@ import EditorPanel from "./components/EditorPanel";
 import Header from "./components/Header";
 import ModulePanel from "./components/ModulePanel";
 import PreviewPanel from "./components/PreviewPanel";
+import ResourcePanel from "./components/ResourcePanel";
 
-import { ModuleConext, StoreModule } from "./store";
+import {
+  ModuleContext, ResourceContext, StoreModule, StoreResource,
+  useStoreResource
+} from "./stores";
+
+type ConfigProviderProps = {
+  children?: React.ReactNode;
+};
+const ConfigProvider: React.FC<ConfigProviderProps> = ({ children }) => {
+  const { resource, resourceDispatch } = StoreResource();
+  const { module, moduleDispatch } = StoreModule();
+  return (
+    <ResourceContext.Provider value={{ ...resource, resourceDispatch }}>
+      <ModuleContext.Provider value={{ ...module, moduleDispatch }}>
+        {children}
+      </ModuleContext.Provider>
+    </ResourceContext.Provider>
+  );
+};
 
 /**
  * @title 编辑
  */
-const EditorRoot = styled.div`
+const ApplicationRoot = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -26,8 +45,8 @@ const Main = styled.div`
   flex: 1 0 0;
 `;
 
-const Aside = styled.div`
-  flex-basis: 320px;
+const Aside = styled.div<{ width: number }>`
+  flex-basis: ${({ width }) => (width ? width + "px" : null)};
   height: 100%;
 `;
 
@@ -37,34 +56,42 @@ const Container = styled.div`
   height: 100%;
 `;
 
-const Editor: React.FC = () => {
-  const { module, moduleDispatch } = StoreModule();
-
+const Application: React.FC = () => {
+  const { collpased } = useStoreResource();
   return (
-    <ModuleConext.Provider value={{ module, moduleDispatch }}>
-      <EditorRoot>
-        <Header logo="Hello Markdown！" />
-        <Main>
-          <Aside>
-            <ModulePanel />
-          </Aside>
-          <Container>
-            <Split
-              direction="horizontal"
-              layout="flex"
-              minSize={400}
-              color="#1d2532"
-              hoverColor="#0351ff"
-              activeColor="#0351ff"
-              gutterSize={3}
-            >
-              <EditorPanel />
-              <PreviewPanel />
-            </Split>
-          </Container>
-        </Main>
-      </EditorRoot>
-    </ModuleConext.Provider>
+    <ApplicationRoot>
+      <Header logo="Hello Markdown！" />
+      <Main>
+        <Aside width={collpased ? 64 : 280}>
+          <ResourcePanel />
+        </Aside>
+        <Aside width={320}>
+          <ModulePanel />
+        </Aside>
+        <Container>
+          <Split
+            direction="horizontal"
+            layout="flex"
+            minSize={400}
+            color="#1d2532"
+            hoverColor="#0351ff"
+            activeColor="#0351ff"
+            gutterSize={3}
+          >
+            <EditorPanel />
+            <PreviewPanel />
+          </Split>
+        </Container>
+      </Main>
+    </ApplicationRoot>
+  );
+};
+
+const Editor: React.FC = () => {
+  return (
+    <ConfigProvider>
+      <Application />
+    </ConfigProvider>
   );
 };
 

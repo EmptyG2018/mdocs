@@ -21,19 +21,13 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
   const monacoEl = useRef<HTMLDivElement | null>(null);
-  const event = useRef<monaco.IDisposable | null>(null);
-
-  const useMounted = (callback: () => void) => {
-    useEffect(() => {
-      if (editor) typeof callback === "function" && callback();
-    }, [editor]);
-  };
 
   const mounteEditor = useCallback(() => {
     if (!editor && monacoEl.current) {
       setEditor(
         monaco.editor.create(monacoEl.current, {
           model: null,
+          wordWrap: 'on',
           automaticLayout: true,
         })
       );
@@ -45,6 +39,10 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
       const currentModel =
         monaco.editor.getModel(model.uri) ||
         monaco.editor.createModel(model.value, "markdown", model.uri);
+
+      editor.updateOptions({
+        readOnly: model.readOnly,
+      });
 
       editor.setModel(currentModel);
     }
@@ -64,12 +62,16 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   }, [editor]);
 
   useEffect(() => {
+    let event: monaco.IDisposable;
     if (editor) {
-      event.current = editor.onDidChangeModelContent((e) => {
+      event = editor.onDidChangeModelContent((e) => {
         onChange && onChange(editor?.getModel()?.getValue() || "");
       });
     }
-  }, [editor, event, onChange]);
+    return () => {
+      event?.dispose();
+    };
+  }, [editor, onChange]);
 
   return <MarkdownEditorRoot ref={monacoEl}></MarkdownEditorRoot>;
 };

@@ -1,20 +1,29 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 
 function Example() {
-  const countRef = useRef(0); // 使用 useRef 存储 count 值
+  const [state, setState] = useState(Math.random());
+
 
   useEffect(() => {
-    console.log('useEffect count: ', countRef.current);
-  }, [countRef]); // 将 countRef 作为 useEffect 的依赖项
+    console.log('mounted !');
 
-  function handleClick() {
-    countRef.current++; // 在 handleClick 中更新 countRef 的值
-  }
+    return () => {
+      console.log('destoryed !');
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(state);
+    console.time('state');
+    return () => {
+      console.timeEnd('state');
+    }
+  }, [state]);
 
   return (
     <div>
-      <p>You clicked {countRef.current} times</p>
-      <button onClick={handleClick}>Click me</button>
+      <p>you is {state}.</p>
+      <button onClick={() => setState(Math.random())}>Click me</button>
     </div>
   );
 }
