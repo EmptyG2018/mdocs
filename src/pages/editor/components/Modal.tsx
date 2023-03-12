@@ -3,6 +3,7 @@ import React, { useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import styled, { css } from "styled-components";
 import { ActionBtn } from "../../../components";
+import { FormattedMessage } from "react-intl";
 import Mask from "./Mask";
 
 const ModalRoot = styled.div<{ zIndex: number }>`
@@ -126,14 +127,28 @@ const Modal: React.FC<ModalProps> = ({
         {footer && (
           <ModalFooter>
             <ActionBtn
-              title={cancelText || "取消"}
+              title={
+                cancelText || (
+                  <FormattedMessage
+                    id="ui.modal.footer.cancel"
+                    defaultMessage="取消"
+                  />
+                )
+              }
               spaceSize={[6, 18]}
               color="#6a7c8f"
               backgroundColor="#192230"
               onClick={() => onCancel && onCancel()}
             />
             <ActionBtn
-              title={confirmText || "确认"}
+              title={
+                confirmText || (
+                  <FormattedMessage
+                    id="ui.modal.footer.confirm"
+                    defaultMessage="确认"
+                  />
+                )
+              }
               spaceSize={[6, 18]}
               color="#fff"
               backgroundColor="#0351ff"

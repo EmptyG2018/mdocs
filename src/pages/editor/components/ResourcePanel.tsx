@@ -3,14 +3,15 @@ import {
   AiOutlineMenuFold,
   AiOutlineMenuUnfold,
   AiOutlineSwitcher,
-  AiTwotoneFolder,
+  AiTwotoneFolder
 } from "react-icons/ai";
+import { FormattedMessage } from "react-intl";
 import styled from "styled-components";
 import { ActionBtn, Path } from "../../../components";
 import {
   useMarkdownModuleParse,
   useMarkdownTitleParse,
-  useRandPrimaryKey,
+  useRandPrimaryKey
 } from "../../../hooks";
 import { useStoreModule, useStoreResource } from "../stores";
 import ResourceHeader from "./ResourceHeader";
@@ -371,11 +372,22 @@ const ResourcePanel: React.FC = () => {
               <ResourceSearch
                 keyword={keyword}
                 onChange={setKeyword}
-                placeholder="搜索"
+                placeholder={
+                  <FormattedMessage
+                    id="resource.search.placeholder"
+                    defaultMessage="搜索"
+                  />
+                }
               />
               <ResourceHeader
                 back
-                title={`目录：${rootDirectory.name}`}
+                title={
+                  <FormattedMessage
+                    id="resource.root"
+                    defaultMessage="目录：{directory}"
+                    values={{ directory: rootDirectory.name }}
+                  />
+                }
                 extra={[
                   <ActionBtn
                     color="#8e98a3"
@@ -420,13 +432,29 @@ const ResourcePanel: React.FC = () => {
                   color="#8e98a3"
                   items={[
                     {
-                      title: "打开文件夹",
-                      desc: "可通过以下操作：",
+                      title: (
+                        <FormattedMessage
+                          id="resource.open.title"
+                          defaultMessage="打开文件夹"
+                        />
+                      ),
+                      desc: (
+                        <FormattedMessage
+                          id="resource.open.desc"
+                          defaultMessage="可通过以下操作："
+                        />
+                      ),
                       children: (
                         <ResourceActionList>
                           {rootDirectory && (
                             <ActionBtn
-                              title={"打开最近：" + rootDirectory.name}
+                              title={
+                                <FormattedMessage
+                                  id="resource.using.title"
+                                  defaultMessage="打开最近：{directory}"
+                                  values={{ directory: rootDirectory.name }}
+                                />
+                              }
                               size={14}
                               backgroundColor="#0351ff"
                               color="#ffffff"
@@ -437,7 +465,12 @@ const ResourcePanel: React.FC = () => {
                           )}
 
                           <ActionBtn
-                            title="打开文件夹"
+                            title={
+                              <FormattedMessage
+                                id="resource.open.title"
+                                defaultMessage="打开文件夹"
+                              />
+                            }
                             size={14}
                             backgroundColor="#0351ff"
                             color="#ffffff"
@@ -449,7 +482,12 @@ const ResourcePanel: React.FC = () => {
                       ),
                     },
                     {
-                      title: "最近打开的资源列表",
+                      title: (
+                        <FormattedMessage
+                          id="resource.used.title"
+                          defaultMessage="最近打开的资源列表"
+                        />
+                      ),
                       children: (
                         <ResourceUsedList>
                           {usedResources.map((item) => (
@@ -473,7 +511,9 @@ const ResourcePanel: React.FC = () => {
             color="#8e98a3"
             icon={<AiTwotoneFolder color="#8e98a3" size={22} />}
             size={15}
-            title="资源管理器"
+            title={
+              <FormattedMessage id="resource" defaultMessage="资源管理器" />
+            }
           />
         </ResourcePanelMain>
       )}

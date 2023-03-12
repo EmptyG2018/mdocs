@@ -1,0 +1,20 @@
+{
+  "ui.modal.footer.cancel": "取消",
+  "ui.modal.footer.confirm": "确认",
+
+  "logo": "Hello Markdown！",
+  "resource": "资源管理器",
+  "resource.search.placeholder": "搜索",
+  "resource.root": "目录：{directory}",
+  "resource.open.title": "打开文件夹",
+  "resource.open.desc": "可通过以下操作：",
+  "resource.used.title": "最近打开的资源列表",
+  "resource.using.title": "打开最近：{directory}",
+  "module.usedModule.title": "已使用模块",
+  "module.usedModule.desc": "选中下列模块列表，可切换模块内容",
+  "module.templateModule.title": "模块模版",
+  "module.templateModule.desc": "更多好地模块，任由你使用",
+  "module.btnText.add": "点击这里，创建模块",
+  "module.modalTitle.add": "创建模块",
+  "module.input.add.placeholder": "模块名称"
+}

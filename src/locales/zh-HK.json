@@ -1,0 +1,20 @@
+{
+  "ui.modal.footer.cancel": "取消",
+  "ui.modal.footer.confirm": "確認",
+  
+  "logo": "Hello Markdown！",
+  "resource": "資源管理器",
+  "resource.search.placeholder": "搜索",
+  "resource.root": "目錄：{directory}",
+  "resource.open.title": "打開資料夾",
+  "resource.open.desc": "可通過以下操作：",
+  "resource.used.title": "最近打開的資源清單",
+  "resource.using.title": "打開最近：{directory}",
+  "module.usedModule.title": "已使用模組",
+  "module.usedModule.desc": "選擇下列模組列表，可切換模組內容",
+  "module.templateModule.title": "模組模板",
+  "module.templateModule.desc": "更多好地模組，任由你使用",
+  "module.btnText.add": "點擊這裡，創建模組",
+  "module.modalTitle.add": "創建模組",
+  "module.input.add.placeholder": "模組名稱"
+  }

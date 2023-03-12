@@ -6,6 +6,7 @@ import {
   AiOutlineHolder,
   AiOutlinePlus,
 } from "react-icons/ai";
+import { FormattedMessage } from "react-intl";
 import styled from "styled-components";
 import { ActionBtn, Input, Section, SectionItem } from "../../../components";
 import { useRandPrimaryKey } from "../../../hooks";
@@ -119,8 +120,18 @@ const ModulePanel: React.FC = () => {
         <ModulePanelMain>
           <ModuleScrollOuter>
             <ModuleGroup
-              title="已使用模块"
-              desc="选中下列模块列表，可切换模块内容"
+              title={
+                <FormattedMessage
+                  id="module.usedModule.title"
+                  defaultMessage="已使用模块"
+                />
+              }
+              desc={
+                <FormattedMessage
+                  id="module.usedModule.desc"
+                  defaultMessage="选中下列模块列表，可切换模块内容"
+                />
+              }
             >
               <Section
                 multiple={false}
@@ -159,12 +170,27 @@ const ModulePanel: React.FC = () => {
               </Section>
             </ModuleGroup>
             <ModuleGroup
-              title="模块模版"
-              desc="更多好地模块，任由你使用"
+              title={
+                <FormattedMessage
+                  id="module.templateModule.title"
+                  defaultMessage="模块模版"
+                />
+              }
+              desc={
+                <FormattedMessage
+                  id="module.templateModule.desc"
+                  defaultMessage="更多好地模块，任由你使用"
+                />
+              }
               placeholder={
                 <ModuleAddBtn
                   icon={<AiOutlinePlus size={20} />}
-                  desc="点击这里，创建模块"
+                  desc={
+                    <FormattedMessage
+                      id="module.btnText.add"
+                      defaultMessage="点击这里，创建模块"
+                    />
+                  }
                   onClick={() => setModalShow(true)}
                 />
               }
@@ -202,7 +228,12 @@ const ModulePanel: React.FC = () => {
       </ModulePanelRoot>
 
       <Modal
-        title="创建模块"
+        title={
+          <FormattedMessage
+            id="module.modalTitle.add"
+            defaultMessage="创建模块"
+          />
+        }
         open={modalShow}
         width={420}
         mode="dark"
@@ -217,7 +248,12 @@ const ModulePanel: React.FC = () => {
       >
         <Input
           value={addModalName}
-          placeholder="模块名称"
+          placeholder={
+            <FormattedMessage
+              id="module.input.add.placeholder"
+              defaultMessage="模块名称"
+            />
+          }
           color="#8e98a3"
           size={14}
           autoFocus

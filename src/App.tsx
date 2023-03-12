@@ -1,46 +1,29 @@
 import React from "react";
-import { createGlobalStyle } from "styled-components";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Editor from "./pages/editor";
-import Demo from "./pages/demo";
-import IndexedDB from "./pages/indexedDB";
+import { RouterProvider, ReduxProvider, LocaleProvider } from "./providers";
+import GlobalStyle from "./globalStyle";
 
-const GloablStyle = createGlobalStyle`
-* {
-  box-sizing: border-box;
-}
-html, body {
-  padding: 0;
-  margin: 0;
-  font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
-  line-height: 1.5;
-}
-body {
-  /* background-color: #202734; */
-}
-`;
+type ConfigProviderProps = {
+  children?: React.ReactNode;
+};
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Editor />,
-  },
-  {
-    path: "/demo",
-    element: <Demo />,
-  },
-  {
-    path: "/indexedDB",
-    element: <IndexedDB />
-  }
-]);
+const ConfigProvider: React.FC<ConfigProviderProps> = ({ children }) => {
+  return (
+    <ReduxProvider>
+      <LocaleProvider>
+        <RouterProvider />
+        {children}
+      </LocaleProvider>
+    </ReduxProvider>
+  );
+};
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <GloablStyle />
-      <RouterProvider router={router} />
-    </div>
+    <ConfigProvider>
+      <div className="App">
+        <GlobalStyle />
+      </div>
+    </ConfigProvider>
   );
 };
 

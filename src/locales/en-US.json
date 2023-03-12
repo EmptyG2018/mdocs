@@ -1,0 +1,20 @@
+{
+  "ui.modal.footer.cancel": "cancel",
+  "ui.modal.footer.confirm": "confirm",
+
+  "logo": "Hello Markdown！",
+  "resource": "Resource Manager",
+  "resource.search.placeholder": "search",
+  "resource.root": "directory：{directory}",
+  "resource.open.title": "Open Folder",
+  "resource.open.desc": "You can perform the following actions:",
+  "resource.used.title": "List of Recently Opened Resources",
+  "resource.using.title": "Open Recent：{directory}",
+  "module.usedModule.title": "Used Module",
+  "module.usedModule.desc": "Select the following module list to switch module content",
+  "module.templateModule.title": "Template Module",
+  "module.templateModule.desc": "More good modules, available for your use",
+  "module.btnText.add": "click here to create a module",
+  "module.modalTitle.add": "create a module",
+  "module.input.add.placeholder": "module name"
+}
