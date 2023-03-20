@@ -1,17 +1,17 @@
+import { Split } from "../../components";
+import {
+  ModuleContext,
+  ResourceContext,
+  StoreModule,
+  StoreResource,
+  useStoreResource,
+} from "./stores";
 import React from "react";
 import styled from "styled-components";
-
-import { Split } from "../../components";
 import EditorPanel from "./components/EditorPanel";
-import Header from "./components/Header";
 import ModulePanel from "./components/ModulePanel";
 import PreviewPanel from "./components/PreviewPanel";
 import ResourcePanel from "./components/ResourcePanel";
-
-import {
-  ModuleContext, ResourceContext, StoreModule, StoreResource,
-  useStoreResource
-} from "./stores";
 
 type ConfigProviderProps = {
   children?: React.ReactNode;
@@ -33,14 +33,6 @@ const ConfigProvider: React.FC<ConfigProviderProps> = ({ children }) => {
  */
 const ApplicationRoot = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100vh;
-  background-color: #1d2532;
-`;
-
-const Main = styled.div`
-  display: flex;
   width: 100%;
   flex: 1 0 0;
 `;
@@ -60,29 +52,26 @@ const Application: React.FC = () => {
   const { collpased } = useStoreResource();
   return (
     <ApplicationRoot>
-      <Header logo="Hello Markdown！" />
-      <Main>
-        <Aside width={collpased ? 64 : 280}>
-          <ResourcePanel />
-        </Aside>
-        <Aside width={320}>
-          <ModulePanel />
-        </Aside>
-        <Container>
-          <Split
-            direction="horizontal"
-            layout="flex"
-            minSize={400}
-            color="#1d2532"
-            hoverColor="#0351ff"
-            activeColor="#0351ff"
-            gutterSize={3}
-          >
-            <EditorPanel />
-            <PreviewPanel />
-          </Split>
-        </Container>
-      </Main>
+      <Aside width={collpased ? 64 : 280}>
+        <ResourcePanel />
+      </Aside>
+      <Aside width={320}>
+        <ModulePanel />
+      </Aside>
+      <Container>
+        <Split
+          direction="horizontal"
+          layout="flex"
+          minSize={400}
+          color="#1d2532"
+          hoverColor="#0351ff"
+          activeColor="#0351ff"
+          gutterSize={3}
+        >
+          <EditorPanel />
+          <PreviewPanel />
+        </Split>
+      </Container>
     </ApplicationRoot>
   );
 };

@@ -1,11 +1,29 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  cloneElement,
+} from "react";
 import * as monaco from "monaco-editor";
 import styled from "styled-components";
+import ActionBtn from "./ActionBtn";
+import { AiOutlineAntDesign } from "react-icons/ai";
 
 const MarkdownEditorRoot = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 `;
+
+const MarkdownEditorHeader = styled.div``;
+
+const MarkdownEditorContainer = styled.div`
+  flex: 1 0 0;
+`;
+
+const MarkdownEditorFooter = styled.div``;
 
 type MarkdownEditorProps = {
   model: any;
@@ -13,11 +31,60 @@ type MarkdownEditorProps = {
   onChange: any;
 };
 
+const insertTitle = (editor, level: number) => {
+  const position = editor?.getPosition();
+
+  editor?.executeEdits("actions", [
+    {
+      range: new monaco.Range(
+        position.lineNumber,
+        1,
+        position.lineNumber,
+        1
+      ),
+      text: " ".padStart(level + 1, "#"),
+      forceMoveMarkers: false,
+    },
+  ]);
+}
+
+const insertSelection = (editor) => {
+  const selection = editor?.getSelection();
+
+}
+
 export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   model,
   theme,
   onChange,
 }) => {
+  const toolbars = [
+    {
+      render: <ActionBtn icon={<AiOutlineAntDesign />} hover></ActionBtn>,
+      onClick: (editor) => insertTitle(editor, 1),
+    },
+    {
+      render: <ActionBtn icon={<AiOutlineAntDesign />} hover></ActionBtn>,
+      onClick: (editor) => insertTitle(editor, 2),
+    },
+    {
+      render: <ActionBtn icon={<AiOutlineAntDesign />} hover></ActionBtn>,
+      onClick: (editor) => insertTitle(editor, 3),
+    },
+    {
+      render: <ActionBtn icon={<AiOutlineAntDesign />} hover></ActionBtn>,
+      onClick: (editor) => insertTitle(editor, 4),
+    },
+    {
+      render: <ActionBtn icon={<AiOutlineAntDesign />} hover></ActionBtn>,
+      onClick: (editor) => insertTitle(editor, 5),
+    },
+    {
+      render: <ActionBtn icon={<AiOutlineAntDesign />} hover></ActionBtn>,
+      onClick: (editor) => insertTitle(editor, 6),
+    }
+  ];
+
   const [editor, setEditor] =
     useState<monaco.editor.IStandaloneCodeEditor | null>(null);
   const monacoEl = useRef<HTMLDivElement | null>(null);
@@ -27,7 +94,7 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
       setEditor(
         monaco.editor.create(monacoEl.current, {
           model: null,
-          wordWrap: 'on',
+          wordWrap: "on",
           automaticLayout: true,
         })
       );
@@ -55,13 +122,6 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   }, [editor, theme]);
 
   useEffect(() => {
-    mounteEditor();
-    return () => {
-      editor?.dispose();
-    };
-  }, [editor]);
-
-  useEffect(() => {
     let event: monaco.IDisposable;
     if (editor) {
       event = editor.onDidChangeModelContent((e) => {
@@ -73,7 +133,24 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
     };
   }, [editor, onChange]);
 
-  return <MarkdownEditorRoot ref={monacoEl}></MarkdownEditorRoot>;
+  useEffect(() => {
+    mounteEditor();
+    return () => {
+      editor?.dispose();
+    };
+  }, [editor]);
+
+  return (
+    <MarkdownEditorRoot>
+      <MarkdownEditorHeader>
+        {toolbars.map((item) =>
+          cloneElement(item.render, { onClick: () => item.onClick(editor) })
+        )}
+      </MarkdownEditorHeader>
+      <MarkdownEditorContainer ref={monacoEl} />
+      <MarkdownEditorFooter></MarkdownEditorFooter>
+    </MarkdownEditorRoot>
+  );
 };
 
 export default MarkdownEditor;

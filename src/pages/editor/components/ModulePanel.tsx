@@ -11,7 +11,7 @@ import styled from "styled-components";
 import { ActionBtn, Input, Section, SectionItem } from "../../../components";
 import { useRandPrimaryKey } from "../../../hooks";
 import { useStoreModule } from "../stores";
-import Modal from "./Modal";
+import Modal from "../../../components/Modal";
 import ModuleAddBtn from "./ModuleAddBtn";
 import ModuleGroup from "./ModuleGroup";
 

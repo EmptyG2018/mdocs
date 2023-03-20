@@ -1,8 +1,7 @@
-import type { ReactPortal } from "react";
 import React, { useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import styled, { css } from "styled-components";
-import { ActionBtn } from "../../../components";
+import { ActionBtn } from "./index";
 import { FormattedMessage } from "react-intl";
 import Mask from "./Mask";
 

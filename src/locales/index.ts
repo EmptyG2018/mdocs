@@ -8,4 +8,19 @@ const locales: Record<string, any> = {
   "en-US": enUS,
 };
 
+export const localeOptions = [
+  {
+    label: "中文简体",
+    value: "zh-CN",
+  },
+  {
+    label: "中文繁体",
+    value: "zh-HK",
+  },
+  {
+    label: "English",
+    value: "en-US",
+  },
+];
+
 export default locales;
